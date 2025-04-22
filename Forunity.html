@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yuta - Premium Unity Development Tools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4f8ef7;
+      --primary-dark: #3a6fd8;
+      --bg-dark: #0f1115;
+      --bg-card: #1b1f27;
+      --bg-section: #1f2631;
+      --text-light: #f1f1f1;
+      --text-muted: #aaa;
+      --border-color: #2a2f3a;
+      --gradient-bg: linear-gradient(135deg, #1f2631 0%, #111419 100%);
+      --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      --accent-glow: 0 0 15px rgba(79, 142, 247, 0.5);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    /* Navigation */
+    nav {
+      background: rgba(15, 17, 21, 0.95);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo span {
+      color: var(--primary);
+    }
+    
+    .logo i {
+      margin-right: 0.5rem;
+      font-size: 1.3rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: var(--gradient-bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: rgba(79, 142, 247, 0.1);
+      border-radius: 50%;
+      top: -250px;
+      right: -150px;
+      filter: blur(80px);
+    }
+    
+    .hero-content {
+      padding: 8rem 0 3rem;
+      position: relative;
+      z-index: 5;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: var(--accent-glow);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background: rgba(79, 142, 247, 0.1);
+    }
+    
+    /* Stats section */
+    .stats {
+      background: var(--bg-section);
+      padding: 2rem 0;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+    
+    .stat-item {
+      padding: 1rem;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    
+    /* Featured section */
+    .section {
+      padding: 5rem 0;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .section-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-header h2::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    
+    .section-header p {
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .sample {
+      background: var(--bg-card);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }
+    
+    .sample:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .sample-img {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    
+    .sample-img::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(0deg, rgba(27, 31, 39, 1) 0%, rgba(27, 31, 39, 0) 50%);
+    }
+    
+    .sample-content {
+      padding: 1.5rem;
+    }
+    
+    .sample-tag {
+      background: rgba(79, 142, 247, 0.2);
+      color: var(--primary);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .sample h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .sample p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    
+    .sample-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .sample-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .sample-meta i {
+      margin-right: 0.25rem;
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      background: var(--bg-section);
+      position: relative;
+    }
+    
+    .testimonials::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(79, 142, 247, 0.05);
+      border-radius: 50%;
+      bottom: -150px;
+      left: -150px;
+      filter: blur(70px);
+    }
+    
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .testimonial {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      position: relative;
+      box-shadow: var(--card-shadow);
+    }
+    
+    .testimonial-quote {
+      font-size: 3rem;
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      opacity: 0.1;
+      color: var(--primary);
+    }
+    
+    .testimonial p {
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .client {
+      display: flex;
+      align-items: center;
+    }
+    
+    .client-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      margin-right: 1rem;
+    }
+    
+    .client-info h4 {
+      margin-bottom: 0.25rem;
+    }
+    
+    .client-info p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .pricing-card {
+      background: var(--bg-card);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      position: relative;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border-color);
+    }
+    
+    .pricing-popular {
+      border: 2px solid var(--primary);
+    }
+    
+    .popular-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+    }
+    
+    .pricing-header {
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .pricing-name {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .pricing-price {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .pricing-price span {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+    
+    .pricing-features {
+      padding: 2rem;
+    }
+    
+    .pricing-features ul {
+      list-style: none;
+    }
+    
+    .pricing-features li {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .pricing-features i {
+      color: var(--primary);
+      margin-right: 0.5rem;
+    }
+    
+    .pricing-btn {
+      display: block;
+      text-align: center;
+      margin: 0 2rem 2rem;
+    }
+    
+    /* Call to action */
+    .cta {
+      text-align: center;
+      padding: 5rem 0;
+      background: var(--gradient-bg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(79, 142, 247, 0.1);
+      border-radius: 50%;
+      top: -150px;
+      right: -150px;
+      filter: blur(80px);
+    }
+    
+    .cta h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cta p {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      color: var(--text-muted);
+    }
+    
+    /* Contact */
+    .contact {
+      background: var(--bg-section);
+      padding: 5rem 0;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .contact-info {
+      margin-bottom: 2rem;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .contact-icon {
+      background: rgba(79, 142, 247, 0.1);
+      color: var(--primary);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-right: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .contact-form {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: var(--card-shadow);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 142, 247, 0.2);
+    }
+    
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--bg-dark);
+      padding: 4rem 0 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    
+    .footer-col h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .footer-col h3::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 2px;
+      background: var(--primary);
+      bottom: 0;
+      left: 0;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+    
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+      padding-left: 5px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    
+    /* Utilities */
+    .text-primary {
+      color: var(--primary);
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+    
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+    
+    .delay-2 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-3 {
+      animation-delay: 0.3s;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-btns {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .nav-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-links {
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container nav-content">
+      <a href="#" class="logo"><i class="fas fa-cube"></i>Yuta<span>Tools</span></a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1 class="animate">Supercharge Your <span class="text-primary">Unity</span> Development</h1>
+      <p class="animate delay-1">Professional-grade tools, plugins, and scripts to streamline your workflow and elevate your game development experience.</p>
+      
+      <div class="hero-btns">
+        <a href="#features" class="btn animate delay-2">Explore Tools</a>
+        <a href="#contact" class="btn btn-outline animate delay-3">Get Custom Solutions</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat-item animate">
+        <div class="stat-number">40+</div>
+        <div class="stat-label">Unity Tools</div>
+      </div>
+      <div class="stat-item animate delay-1">
+        <div class="stat-number">5000+</div>
+        <div class="stat-label">Happy Developers</div>
+      </div>
+      <div class="stat-item animate delay-2">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Positive Reviews</div>
+      </div>
+      <div class="stat-item animate delay-3">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Support</div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Section -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Featured Tools</h2>
+        <p>Explore our most popular Unity development solutions that help game developers build better games, faster.</p>
+      </div>
+      
+      <div class="featured-grid">
+        <div class="sample animate">
+          <div class="sample-img" style="background-image: url('/api/placeholder/600/180')"></div>
+          <div class="sample-content">
+            <span class="sample-tag">Editor Extension</span>
+            <h3>AutoReference Pro</h3>
+            <p>Automatically identifies and assigns references in your prefabs and scenes, saving countless hours of manual setup and reducing human error.</p>
+            <div class="sample-footer">
+              <span class="sample-meta"><i class="fas fa-download"></i> 1.2k downloads</span>
+              <span class="sample-meta"><i class="fas fa-star"></i> 4.9/5</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sample animate delay-1">
+          <div class="sample-img" style="background-image: url('/api/placeholder/600/180')"></div>
+          <div class="sample-content">
+            <span class="sample-tag">Plugin</span>
+            <h3>Scene Loader Pro</h3>
+            <p>Complete scene management solution with async loading, preloading, transition effects, and memory optimization for seamless game experiences.</p>
+            <div class="sample-footer">
+              <span class="sample-meta"><i class="fas fa-download"></i> 3.5k downloads</span>
+              <span class="sample-meta"><i class="fas fa-star"></i> 4.8/5</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sample animate delay-2">
+          <div class="sample-img" style="background-image: url('/api/placeholder/600/180')"></div>
+          <div class="sample-content">
+            <span class="sample-tag">Framework</span>
+            <h3>Smart Object Pooler</h3>
+            <p>Advanced object pooling system with automatic scaling, multi-threading support, and detailed performance analytics for high-intensity games.</p>
+            <div class="sample-footer">
+              <span class="sample-meta"><i class="fas fa-download"></i> 2.8k downloads</span>
+              <span class="sample-meta"><i class="fas fa-star"></i> 4.9/5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials -->
+  <section id="testimonials" class="section testimonials">
+    <div class="container">
+      <div class="section-header">
+        <h2>Developer Testimonials</h2>
+        <p>Hear what other Unity developers have to say about our tools and support.</p>
+      </div>
+      
+      <div class="testimonial-grid">
+        <div class="testimonial animate">
+          <div class="testimonial-quote"><i class="fas fa-quote-right"></i></div>
+          <p>"Yuta's AutoReference saved our team at least 2 hours of work per day. The attention to detail and performance optimization is unmatched in the Asset Store."</p>
+          <div class="client">
+            <div class="client-avatar">JD</div>
+            <div class="client-info">
+              <h4>James Davidson</h4>
+              <p>Lead Developer, Quantum Games</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial animate delay-1">
+          <div class="testimonial-quote"><i class="fas fa-quote-right"></i></div>
+          <p>"The Scene Loader Pro completely changed how we handle transitions in our open-world game. Load times reduced by 70% and the async functionality is flawless."</p>
+          <div class="client">
+            <div class="client-avatar">ML</div>
+            <div class="client-info">
+              <h4>Maria Lopez</h4>
+              <p>Technical Director, NeoVerse Studios</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial animate delay-2">
+          <div class="testimonial-quote"><i class="fas fa-quote-right"></i></div>
+          <p>"Customer support from Yuta is exceptional. They helped us integrate their tools into our custom pipeline and even added features we needed for our specific use case."</p>
+          <div class="client">
+            <div class="client-avatar">AK</div>
+            <div class="client-info">
+              <h4>Alex Kim</h4>
+              <p>Indie Developer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pricing -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Simple Pricing</h2>
+        <p>Choose the right plan for your development needs with our transparent pricing structure.</p>
+      </div>
+      
+      <div class="pricing-grid">
+        <div class="pricing-card animate">
+          <div class="pricing-header">
+            <h3 class="pricing-name">Indie</h3>
+            <div class="pricing-price">$49<span>/year</span></div>
+            <p>Perfect for solo developers and small projects</p>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> Access to 10 core tools</li>
+              <li><i class="fas fa-check"></i> Community support</li>
+              <li><i class="fas fa-check"></i> Use on 2 projects</li>
+              <li><i class="fas fa-check"></i> 1 year of updates</li>
+              <li><i class="fas fa-times"></i> Custom integration support</li>
+            </ul>
+          </div>
+          <a href="#" class="btn pricing-btn">Get Started</a>
+        </div>
+        
+        <div class="pricing-card pricing-popular animate delay-1">
+          <span class="popular-tag">Most Popular</span>
+          <div class="pricing-header">
+            <h3 class="pricing-name">Studio</h3>
+            <div class="pricing-price">$149<span>/year</span></div>
+            <p>Ideal for professional teams and commercial projects</p>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> Access to all 40+ tools</li>
+              <li><i class="fas fa-check"></i> Priority email support</li>
+              <li><i class="fas fa-check"></i> Use on unlimited projects</li>
+              <li><i class="fas fa-check"></i> 1 year of updates</li>
+              <li><i class="fas fa-check"></i> Basic integration support</li>
+            </ul>
+          </div>
+          <a href="#" class="btn pricing-btn">Get Started</a>
+        </div>
+        
+        <div class="pricing-card animate delay-2">
+          <div class="pricing-header">
+            <h3 class="pricing-name">Enterprise</h3>
+            <div class="pricing-price">$399<span>/year</span></div>
+            <p>For larger teams requiring advanced support</p>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> Access to all tools + beta features</li>
+              <li><i class="fas fa-check"></i> 24/7 priority support</li>
+              <li><i class="fas fa-check"></i> Use on unlimited projects</li>
+              <li><i class="fas fa-check"></i> Lifetime updates</li>
+              <li><i class="fas fa-check"></i> Custom integration & consultation</li>
+            </ul>
+          </div>
+          <a href="#" class="btn pricing-btn">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Call to Action -->
+  <section class="cta">
+    <div class="container">
+      <h2 class="animate">Ready
